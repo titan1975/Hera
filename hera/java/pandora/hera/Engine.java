@@ -60,6 +60,7 @@ public class Engine {
 
 			int numberNeurons = (int) params[0];
             System.out.println("Number of neurons (rows) "+numberNeurons);
+            System.out.println("Number of neurons (rows) "+numberNeurons);
 		//	int weightsPerNeuron = weights.size() == 0 ? (int) params[1] : weights.getLast().getRows();
             System.out.println("\n");
 		
