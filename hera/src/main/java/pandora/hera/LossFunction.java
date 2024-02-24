@@ -25,12 +25,12 @@ public class LossFunction {
 	public static Matrix crossEntropy(Matrix expected, Matrix actual) {	
 		
 		
-		 System.out.println("CrossEntropy  Expected");
-		 System.out.println(expected);
-		
-		 System.out.println("CrossEntropy Actual");
-		 System.out.println(actual);
-		
+//		 System.out.println("CrossEntropy  Expected");
+//		 System.out.println(expected);
+//		
+//		 System.out.println("CrossEntropy Actual");
+//		 System.out.println(actual);
+//		
 		
 		Matrix result= actual.apply((index, value)->{
 		

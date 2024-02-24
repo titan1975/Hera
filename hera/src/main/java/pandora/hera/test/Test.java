@@ -18,7 +18,6 @@ public class Test {
 		System.out.println(input);
 		
 		
-		
 	var	result= input.modify(i->3);
 	
 	

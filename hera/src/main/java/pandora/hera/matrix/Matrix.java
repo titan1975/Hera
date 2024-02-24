@@ -31,9 +31,6 @@ public class Matrix {
 		a[row * cols + col] = value;
 	}
     
-    public double get(int row,int col, double value) {
-       return a[row*col+col];
-    }
     public double get(int row, int col) {
 		return a[row * cols + col];
 	}
