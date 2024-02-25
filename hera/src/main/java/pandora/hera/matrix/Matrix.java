@@ -6,7 +6,7 @@ import java.util.Objects;
 public class Matrix {
 
     private static final String NUMBER_FORMAT = "%+12.5f";
-    private static final double TOLERANCE = 0.000000001f;
+    private static final double TOLERANCE = 0.00001f;
     private int rows;
     private int cols;
 
@@ -207,7 +207,7 @@ public class Matrix {
             return false;
         Matrix other = (Matrix) obj;
 
-        for (int i = 0; i < a.length; i++) {
+        for (int i = 0; i < a.length; ++i) {
             if (Math.abs(a[i] - other.a[i]) > TOLERANCE) {
                 return false;
             }
