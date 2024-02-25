@@ -16,15 +16,26 @@ public class Engine {
 	private LinkedList<Matrix> weights = new LinkedList<>();
 	private LinkedList<Matrix> biases = new LinkedList<>();
     private LossFunction lossFunction= LossFunction.CROSSENTROPY;
+	private boolean storeInputError = false;
 	
-	public Matrix runBackwards(BatchResult batchResult, Matrix expected) {
+    
+    public Matrix runBackwards(BatchResult batchResult, Matrix expected) {
 		
 	var  transformIt	 = transforms.descendingIterator();
+	
 	
 	if (lossFunction!=LossFunction.CROSSENTROPY|| transforms.getLast()!=Transform.SOFTMAX) {
 		
 		throw new UnsupportedOperationException("Last fuction must be cross entropy and transform must be softmax");
 	}
+	
+	var ioIt = batchResult.getIo().descendingIterator();
+	Matrix softmaxOutput =ioIt.next();
+	Matrix error =softmaxOutput.apply((index,value)->
+	
+	value-expected.get(index)
+);
+	
 	while (transformIt.hasNext()) {
 	
 		Transform transform = transformIt.next();
@@ -43,8 +54,11 @@ public class Engine {
 		System.out.println(transform);
 	}
 	
+	if(storeInputError) {
+	batchResult.addIo(error);
+    }
 	
-	return null;	
+	return error;	
 	}
 	
 	
@@ -52,6 +66,15 @@ public class Engine {
 	
 	
 	
+	public void setStoreInputError(boolean storeInputError) {
+		this.storeInputError = storeInputError;
+	}
+
+
+
+
+
+
 	public BatchResult runForwards(Matrix input) {
 		BatchResult batchResult = new BatchResult();
 		Matrix output = input;
