@@ -116,7 +116,7 @@ public class Matrix {
         for (int i = 0; i < a.length; i++) {
             a[i] = producer.produce(a[i]);
         }
-        System.out.println(a.length);
+       // System.out.println(a.length);
         return this;
     }
 

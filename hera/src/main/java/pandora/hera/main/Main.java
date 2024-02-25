@@ -169,24 +169,7 @@ System.out.println(output);
 	
 	}
 
-	public static void startEngine() {
-		// Variational Autoencoders (VAEs) and Generative Adversarial Networks (GANs)
-		Engine engine = new Engine();
-		engine.add(Transform.DENSE, 8,5);
-		engine.add(Transform.RELU);
-		engine.add(Transform.DENSE ,5);
-		engine.add(Transform.RELU);
-		engine.add(Transform.DENSE, 4);
-		engine.add(Transform.SOFTMAX);
-		
-		Matrix input = new Matrix(5,4 ,i-> random.nextGaussian());
-		Matrix output =  engine.runForwards(input);
-		
-		
-		System.out.println(engine);
-		
-		System.out.println(output);
-	}
+	
 	
 	
 	public static Matrix multiplyMatrices(Matrix m1, Matrix m2) {
