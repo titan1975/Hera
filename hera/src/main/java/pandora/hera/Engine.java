@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import pandora.hera.batches.BatchResult;
+import pandora.hera.lossfunctions.LossFunction;
 import pandora.hera.matrix.Matrix;
 
 
@@ -14,11 +15,16 @@ public class Engine {
 	private LinkedList<Transform> transforms = new LinkedList<>();
 	private LinkedList<Matrix> weights = new LinkedList<>();
 	private LinkedList<Matrix> biases = new LinkedList<>();
-
+    private LossFunction lossFunction= LossFunction.CROSSENTROPY;
 	
 	public Matrix runBackwards(BatchResult batchResult, Matrix expected) {
 		
 	var  transformIt	 = transforms.descendingIterator();
+	
+	if (lossFunction!=LossFunction.CROSSENTROPY|| transforms.getLast()!=Transform.SOFTMAX) {
+		
+		throw new UnsupportedOperationException("Last fuction must be cross entropy and transform must be softmax");
+	}
 	while (transformIt.hasNext()) {
 	
 		Transform transform = transformIt.next();

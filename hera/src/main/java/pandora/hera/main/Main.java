@@ -4,8 +4,8 @@ import java.util.Random;
 import java.util.function.Function;
 
 import pandora.hera.Engine;
-import pandora.hera.LossFunction;
 import pandora.hera.Transform;
+import pandora.hera.lossfunctions.LossFunctions;
 import pandora.hera.matrix.Approximator;
 import pandora.hera.matrix.Matrix;
 
@@ -30,7 +30,7 @@ public class Main {
 		Matrix actual = new Matrix(3, 3, i -> 0.05 * i * i).softMax();
 		 System.out.println(actual);
 		
-			Matrix result= LossFunction.crossEntropy(expected, actual);
+			Matrix result= LossFunctions.crossEntropy(expected, actual);
 			System.out.println(result);
 		 
 
@@ -99,7 +99,7 @@ public class Main {
 		 Matrix result=	Approximator.gradient(input, in-> {
 			
 			 //public static Matrix crossEntropy(Matrix expected, Matrix actual)
-			 Matrix crossEntropy =LossFunction.crossEntropy(expected, in);
+			 Matrix crossEntropy =LossFunctions.crossEntropy(expected, in);
 			 
 			 return crossEntropy;
 			

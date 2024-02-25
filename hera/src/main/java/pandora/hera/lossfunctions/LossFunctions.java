@@ -1,11 +1,11 @@
-package pandora.hera;
+package pandora.hera.lossfunctions;
 
 
 import pandora.hera.matrix.Matrix;
 import pandora.hera.matrix.Matrix.IndexValueProducer;
 
 
-public class LossFunction {
+public class LossFunctions {
 	
 //	// Apply an IndexValueProducer to each element of the matrix
 //    public Matrix apply(IndexValueProducer producer) {
