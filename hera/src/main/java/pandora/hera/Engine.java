@@ -30,6 +30,7 @@ public class Engine {
 	}
 	
 	var ioIt = batchResult.getIo().descendingIterator();
+	var weightIt =weights.descendingIterator();
 	Matrix softmaxOutput =ioIt.next();
 	Matrix error =softmaxOutput.apply((index,value)->
 	
@@ -37,13 +38,18 @@ public class Engine {
 );
 	
 	while (transformIt.hasNext()) {
-	
+	    Matrix input =ioIt.next();
 		Transform transform = transformIt.next();
 		
 		switch(transform) {
 		case DENSE:
+			Matrix weight = weightIt.next();
+		  if(weightIt.hasNext() || storeInputError) {
+			error=weight.transpose().multiply(error);
+		  }
 			break;
 		case RELU:
+			error=  error.apply((index,value)->input.get(index) > 0 ? value :0);
 			break;
 		case SOFTMAX:
 			break;
@@ -51,14 +57,16 @@ public class Engine {
 			throw new UnsupportedOperationException("Not Impelemented");
 		}
 		
-		System.out.println(transform);
+		//System.out.println(transform);
 	}
 	
 	if(storeInputError) {
-	batchResult.addIo(error);
+		
+	batchResult.setInputError(error);
+	
     }
 	
-	return error;	
+	return null;	
 	}
 	
 	

@@ -4,49 +4,49 @@ import java.util.function.Function;
 
 public class Approximator {
 
-public static Matrix gradient(Matrix input,Function <Matrix,Matrix> transform)	{
-	
-	final double INC = 0.00000001;
-	
-	Matrix loss1 =transform.apply(input);
-	
-	Matrix result= new Matrix(input.getRows(),input.getCols(),i ->0);
-	
-//	System.out.println("Approximator gradient INPUT");
+//public static Matrix gradient(Matrix input,Function <Matrix,Matrix> transform)	{
 //	
-//	System.out.println(input);
+//	final double INC = 0.00000001;
 //	
-//	System.out.println("Approximator gradient loss1)");
+//	Matrix loss1 =transform.apply(input);
 //	
-//	System.out.println(loss1);
-	
-	input.forEach((row,col,index,value)->{
-	
-	
-		
-		Matrix incremented = input.addIncrement(row, col, INC);
-		
-//		System.out.println("Approximator gradient incremented!! ROW = "+row+"  COL=  "+col+" INDEX= "+index+" VALUE = "+value );
-//		System.out.println(incremented);
-		
-		
-		Matrix loss2 = transform.apply(incremented);
-		
-//		System.out.println("Approximator gradient loss2");
-//		System.out.println(loss2);
-		
-		double rate = (loss2.get(col)-loss1.get(col))/INC;
-		
-		result.set(row, col, rate);
-	
-		
-	});
-	
-//	System.out.println("Approximator gradient result");
-//	System.out.println(result);
+//	Matrix result= new Matrix(input.getRows(),input.getCols(),i ->0);
 //	
-	return result;
-}
+////	System.out.println("Approximator gradient INPUT");
+////	
+////	System.out.println(input);
+////	
+////	System.out.println("Approximator gradient loss1)");
+////	
+////	System.out.println(loss1);
+//	
+//	input.forEach((row,col,index,value)->{
+//	
+//	
+//		
+//		Matrix incremented = input.addIncrement(row, col, INC);
+//		
+////		System.out.println("Approximator gradient incremented!! ROW = "+row+"  COL=  "+col+" INDEX= "+index+" VALUE = "+value );
+////		System.out.println(incremented);
+//		
+//		
+//		Matrix loss2 = transform.apply(incremented);
+//		
+////		System.out.println("Approximator gradient loss2");
+////		System.out.println(loss2);
+//		
+//		double rate = (loss2.get(col)-loss1.get(col))/INC;
+//		
+//		result.set(row, col, rate);
+//	
+//		
+//	});
+//	
+////	System.out.println("Approximator gradient result");
+////	System.out.println(result);
+////	
+//	return result;
+//}
 //	public static Matrix gradient(Matrix input, Function<Matrix, Matrix> transform) {
 //		final double INC = 0.000001;
 //		
@@ -69,4 +69,54 @@ public static Matrix gradient(Matrix input,Function <Matrix,Matrix> transform)	{
 //
 //		return null;
 //	}
+	public static Matrix gradient(Matrix input, Function<Matrix, Matrix> transform) {
+		final double INC = 0.000001;
+		
+		Matrix loss1 = transform.apply(input);
+		
+		System.out.println(input);
+		System.out.println(loss1);
+		
+		Matrix result=new Matrix (input.getRows(),input.getCols(),i->0);
+		input.forEach((row, col, index, value) -> {
+
+			System.out.printf("%12.5f", value);
+
+			Matrix incremented = input.addIncrement(row, col, INC);
+			
+			Matrix loss2 = transform.apply(incremented);
+		
+			double rate = (loss2.get(col)-loss1.get(col))/INC;
+		
+			 result.set(row, col, rate);
+		});
+
+		return result;
+	}
+	
+	public static Matrix weightsGradient(Matrix weights, Function<Matrix, Matrix> transform) {
+	final double INC = 0.00000001;
+	
+	Matrix loss1 = transform.apply(weights);
+	
+//	System.out.println(weights);
+//	System.out.println(loss1);
+	
+	Matrix result=new Matrix (weights.getRows(),weights.getCols(),i->0);
+	
+	weights.forEach((row, col, index, value) -> {
+
+		//System.out.printf("%12.5f", value);
+
+		Matrix incremented = weights.addIncrement(row, col, INC);
+		
+		Matrix loss2 = transform.apply(incremented);
+	
+		double rate = (loss2.get(0)-loss1.get(0))/INC;
+	
+		 result.set(row, col, rate);
+	});
+
+	return result;
+}
 }

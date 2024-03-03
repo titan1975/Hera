@@ -6,11 +6,21 @@ import java.util.Objects;
 public class Matrix {
 
     private static final String NUMBER_FORMAT = "%+12.5f";
-    private static final double TOLERANCE = 0.00001f;
+    private  double tolerance = 0.00001f;
     private int rows;
     private int cols;
 
-    public int getRows() {
+    
+    
+    public double getTolerance() {
+		return tolerance;
+	}
+
+	public void setTolerance(double tolerance) {
+		this.tolerance = tolerance;
+	}
+
+	public int getRows() {
         return rows;
     }
 
@@ -133,6 +143,22 @@ public class Matrix {
     	return result;
     }
     
+    
+    public Matrix averageColumn() {
+    	   Matrix result = new Matrix(rows, 1);
+    	forEach((row,col,index,value)->{
+    		
+    		
+    		result.a[row]+=value/cols;
+    	});
+   
+    
+    
+    return result;
+    
+    }
+    
+
     // Compute the softmax of the matrix
     public Matrix softMax() {
         Matrix result = new Matrix(rows, cols, i -> Math.exp(a[i]));
@@ -208,7 +234,7 @@ public class Matrix {
         Matrix other = (Matrix) obj;
 
         for (int i = 0; i < a.length; ++i) {
-            if (Math.abs(a[i] - other.a[i]) > TOLERANCE) {
+            if (Math.abs(a[i] - other.a[i]) > tolerance) {
                 return false;
             }
         }
