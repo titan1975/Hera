@@ -6,6 +6,7 @@ import java.util.Random;
 
 import pandora.hera.batches.BatchResult;
 import pandora.hera.lossfunctions.LossFunction;
+import pandora.hera.lossfunctions.LossFunctions;
 import pandora.hera.matrix.Matrix;
 
 
@@ -19,6 +20,19 @@ public class Engine {
 	private boolean storeInputError = false;
 	
     
+	public void evaluate (BatchResult batchResult, Matrix expected) {
+		
+		if (lossFunction!=LossFunction.CROSSENTROPY) {
+			
+			throw new UnsupportedOperationException("Only cross entropy is supported");
+		}
+		
+	double loss =	LossFunctions.crossEntropy(expected,batchResult.getOutput()).averageColumn().get(0);
+	
+	batchResult.setLoss(loss);
+	}
+	
+	
     public Matrix runBackwards(BatchResult batchResult, Matrix expected) {
 		
 	var  transformIt	 = transforms.descendingIterator();
