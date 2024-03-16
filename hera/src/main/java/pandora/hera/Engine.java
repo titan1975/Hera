@@ -29,11 +29,67 @@ public class Engine {
 		
 	double loss =	LossFunctions.crossEntropy(expected,batchResult.getOutput()).averageColumn().get(0);
 	
+	Matrix predictions = batchResult.getOutput().getGreatestRowNumbers();
+	Matrix actual = expected.getGreatestRowNumbers();
+	
+	int correct =0;
+	
+	
+	for (int i = 0; i < actual.getCols(); i++) {
+		
+		if ((int)actual.get(i)==(int)predictions.get(i)) {
+			
+			++correct;
+		}
+		
+	}
+	
+	double percentCorrect =(100* correct)/actual.getCols();
+	
+	batchResult.setPercentCorrect(percentCorrect);
+	
 	batchResult.setLoss(loss);
 	}
 	
+	public void adjust(BatchResult batchResult, Matrix expected) {
+		
+		var weightInputs = batchResult.getWeightInputs();
+		var weightErrors = batchResult.getWeightErrors();
+		
+		assert weightInputs.size()==weightErrors.size();
+		assert weightInputs.size()==weights.size();
+	}
+   
 	
-    public Matrix runBackwards(BatchResult batchResult, Matrix expected) {
+public void adjust(BatchResult batchResult, double learnRate) {
+		
+		var weightInputs = batchResult.getWeightInputs();
+		var weightErrors = batchResult.getWeightErrors();
+		
+		assert weightInputs.size()==weightErrors.size();
+		assert weightInputs.size()==weights.size();
+		
+		for (int i = 0; i < weights.size(); i++) {
+
+			var weight = weights.get(i);
+			var bias = biases.get(i);
+			var error= weightErrors.get(i);
+			var input= weightInputs.get(i);
+					
+			assert weight.getCols()==input.getRows();
+			
+			var weightAdjust= error.multiply(input.transpose());
+			var biasAdjust= error.averageColumn();
+			
+			double rate = learnRate/input.getCols();
+			weight.modify((index,value)->rate *weightAdjust.get(index));
+			
+			bias.modify((row,col,value)->rate *biasAdjust.get(row));
+		}	
+
+	}
+	
+	public Matrix runBackwards(BatchResult batchResult, Matrix expected) {
 		
 	var  transformIt	 = transforms.descendingIterator();
 	
@@ -58,7 +114,10 @@ public class Engine {
 		switch(transform) {
 		case DENSE:
 			Matrix weight = weightIt.next();
-		  if(weightIt.hasNext() || storeInputError) {
+			
+			batchResult.addWeightError(error);
+		 
+			if(weightIt.hasNext() || storeInputError) {
 			error=weight.transpose().multiply(error);
 		  }
 			break;
@@ -106,7 +165,7 @@ public class Engine {
 		for (var transform : transforms) {
 
 			if (transform == Transform.DENSE) {
-			
+			batchResult.addWeightInput(output);
 				Matrix weight = weights.get(denseIndex);
 				Matrix bias = biases.get(denseIndex);
 

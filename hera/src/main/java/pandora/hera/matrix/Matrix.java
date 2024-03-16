@@ -9,7 +9,44 @@ public class Matrix {
     private  double tolerance = 0.00001f;
     private int rows;
     private int cols;
+    
+    // Functional Interfaces used for various operations on the matrix
+    @FunctionalInterface
+    public interface Producer {
+        double produce(int index);
+    }
 
+    @FunctionalInterface
+    public interface IndexValueProducer {
+        double produce(int index, double value);
+    }
+
+    
+    @FunctionalInterface
+    public interface ValueProducer {
+        double produce(double value);
+    }
+
+    @FunctionalInterface
+    public interface IndexValueConsumer {
+        void consume(int index, double value);
+    }
+
+    @FunctionalInterface
+    public interface RowColValueConsumer {
+        void consume(int rows, int cols, double value);
+    }
+
+    
+    @FunctionalInterface
+    public interface RowColIndexValueConsumer {
+        void consume(int rows, int cols, int index,double value);
+    }
+
+    @FunctionalInterface
+    public interface RowColProducer {
+        double produce(int row, int col, double value);
+    }
     
     
     public double getTolerance() {
@@ -55,42 +92,9 @@ public class Matrix {
     	
     	return result;
     }
-    // Functional Interfaces used for various operations on the matrix
-    @FunctionalInterface
-    public interface Producer {
-        double produce(int index);
-    }
-
-    @FunctionalInterface
-    public interface IndexValueProducer {
-        double produce(int index, double value);
-    }
-
-    @FunctionalInterface
-    public interface ValueProducer {
-        double produce(double value);
-    }
-
-    @FunctionalInterface
-    public interface IndexValueConsumer {
-        void consume(int index, double value);
-    }
-
-    @FunctionalInterface
-    public interface RowColValueConsumer {
-        void consume(int rows, int cols, double value);
-    }
-
-    
-    @FunctionalInterface
-    public interface RowColIndexValueConsumer {
-        void consume(int rows, int cols, int index,double value);
-    }
-
-    @FunctionalInterface
-    public interface RowColProducer {
-        double produce(int row, int col, double value);
-    }
+   
+   
+   
 
     private double[] a;
 
@@ -130,6 +134,15 @@ public class Matrix {
         return this;
     }
 
+    
+ // Modify each element of the matrix using a ValueProducer
+    public Matrix modify(IndexValueProducer producer) {
+        for (int i = 0; i < a.length; i++) {
+            a[i] = producer.produce(i,a[i]);
+        }
+       // System.out.println(a.length);
+        return this;
+    }
     public Matrix transpose() {
     	Matrix result= new Matrix (cols,rows);
     	
@@ -182,6 +195,30 @@ public class Matrix {
         return result;
     }
 
+    public Matrix getGreatestRowNumbers () {
+   
+    Matrix result  = new Matrix(1, cols);    	
+    double []  greatest = new double [cols];
+    for (int i = 0; i < cols; i++) {
+    	greatest[i]=Double.MIN_VALUE;
+        }
+   
+    forEach((row,col,value)->{
+    	
+    	if (value>greatest[col]) {
+    		greatest[col]=value;
+    		result.a[col]=row;
+    		
+    	}
+    	
+    });
+    
+    
+    return result;
+    	
+    }
+    
+    
     // Modify each element of the matrix using a RowColProducer
     public Matrix modify(RowColProducer producer) {
         int index = 0;
