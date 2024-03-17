@@ -102,10 +102,8 @@ public void adjust(BatchResult batchResult, double learnRate) {
 	var ioIt = batchResult.getIo().descendingIterator();
 	var weightIt =weights.descendingIterator();
 	Matrix softmaxOutput =ioIt.next();
-	Matrix error =softmaxOutput.apply((index,value)->
+	Matrix error = softmaxOutput.apply((index, value)->value - expected.get(index));
 	
-	value-expected.get(index)
-);
 	
 	while (transformIt.hasNext()) {
 	    Matrix input =ioIt.next();
@@ -157,6 +155,7 @@ public void adjust(BatchResult batchResult, double learnRate) {
 
 
 	public BatchResult runForwards(Matrix input) {
+	
 		BatchResult batchResult = new BatchResult();
 		Matrix output = input;
 		

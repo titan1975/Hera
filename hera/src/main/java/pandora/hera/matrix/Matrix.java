@@ -114,6 +114,21 @@ public class Matrix {
         }
     }
 
+    
+    // Constructor to create a matrix with specified rows, columns, and a producer
+    public Matrix(int rows, int cols,  double [] values) {
+      
+    	this.rows = rows;
+    	this.cols =cols;
+    	
+    	Matrix tmp = new Matrix(rows, cols);
+    	tmp.a=values;
+    	
+    	Matrix transposed = tmp.transpose();
+    	a = transposed.a;
+    }
+    
+    
     // Apply an IndexValueProducer to each element of the matrix
     public Matrix apply(IndexValueProducer producer) {
         Matrix result = new Matrix(rows, cols);
