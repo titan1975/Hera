@@ -1,11 +1,13 @@
 package pandora.hera.matrix;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Matrix {
+public class Matrix implements Serializable{
 
-    private static final String NUMBER_FORMAT = "%+12.5f";
+    private static final long serialVersionUID = 1L;
+	private static final String NUMBER_FORMAT = "%+12.5f";
     private  double tolerance = 0.00001f;
     private int rows;
     private int cols;
@@ -358,5 +360,10 @@ public void forEach(RowColIndexValueConsumer consumer) {
             consumer.consume(row, col,index, a[index++]);
         }
     }
+}
+
+public double[] get() {
+	// TODO Auto-generated method stub
+	return a;
 }
 }

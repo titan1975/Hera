@@ -1,6 +1,7 @@
 package pandora.hera;
 
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -10,7 +11,9 @@ import pandora.hera.lossfunctions.LossFunctions;
 import pandora.hera.matrix.Matrix;
 
 
-public class Engine {
+public class Engine implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private Random random = new Random();
 
 	private LinkedList<Transform> transforms = new LinkedList<>();
