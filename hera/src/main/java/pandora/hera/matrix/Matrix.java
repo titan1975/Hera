@@ -9,6 +9,7 @@ public class Matrix {
     private  double tolerance = 0.00001f;
     private int rows;
     private int cols;
+    private double[] a;
     
     // Functional Interfaces used for various operations on the matrix
     @FunctionalInterface
@@ -94,9 +95,6 @@ public class Matrix {
     }
    
    
-   
-
-    private double[] a;
 
     // Constructor to create a matrix with specified rows and columns
     public Matrix(int rows, int cols) {
@@ -158,6 +156,18 @@ public class Matrix {
        // System.out.println(a.length);
         return this;
     }
+    
+    public double sum() {
+		double sum = 0;
+		
+		for(var v: a) {
+			sum += v;
+		}
+		
+		return sum;
+	}
+    
+    
     public Matrix transpose() {
     	Matrix result= new Matrix (cols,rows);
     	
